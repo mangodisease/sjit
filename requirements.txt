@@ -4,3 +4,5 @@ numpy
 opencv-python
 face_recognition
 uvicorn
+python-multipart
+pymongo[srv]
