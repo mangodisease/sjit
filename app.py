@@ -33,7 +33,8 @@ def test():
 async def encode(
     file: UploadFile = File(...)
 ):
-    image = await file.read()
+    raw_img = await file.read()
+    image = face_recognition.load_image_file(raw_img)
     encoded = face_recognition.face_encodings(image)[0]
 
     return {
