@@ -29,8 +29,10 @@ def read_file_as_image(data) -> np.ndarray:
 async def test(
     file: UploadFile = File(...)
 ):
-    img = read_file_as_image(await file.read())
-    print(img)
+    f = await file.read()
+    print(f)
+    img = read_file_as_image(f)
+    #print(img)
     return "OK"
 
 @app.post("/encode")
@@ -38,8 +40,9 @@ async def encode(
     file: UploadFile = File(...)
 ):
     raw_img = await file.read()
-    image = face_recognition.load_image_file(raw_img)
-    encoded = face_recognition.face_encodings(image)[0]
+    #image = face_recognition.load_image_file(raw_img)
+    img = read_file_as_image(await file.read())
+    encoded = face_recognition.face_encodings(img)[0]
 
     return {
         "encoded": encoded
