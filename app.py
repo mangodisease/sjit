@@ -26,8 +26,11 @@ def read_file_as_image(data) -> np.ndarray:
     return image
 
 @app.post("/")
-def test():
-    return "Testing OK"
+async def test(
+    file: UploadFile = File(...)
+):
+    img = await file.read()
+    return img
 
 @app.post("/encode")
 async def encode(
