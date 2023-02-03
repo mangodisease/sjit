@@ -30,7 +30,6 @@ async def test(
     file: UploadFile = File(...)
 ):
     f = await file.read()
-    print(f)
     img = read_file_as_image(f)
     #print(img)
     return "OK"
