@@ -1,7 +1,7 @@
-cmake
 flask
 numpy
 face_recognition
 python-multipart
 pymongo[srv]
 gunicorn
+cmake
