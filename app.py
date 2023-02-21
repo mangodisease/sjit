@@ -16,7 +16,7 @@ def read_file_as_image(data) -> np.ndarray:
     image = np.array(Image.open(BytesIO(data)))
     return image
 
-@app.post("/encode")
+@app.post("/encode", methods=['POST'])
 def encode():
     file = request.files['file']
     img = face_recognition.load_image_file(file)
