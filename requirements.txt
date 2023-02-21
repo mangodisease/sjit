@@ -5,3 +5,4 @@ gunicorn
 pillow
 numpy
 pymongo[srv]
+pybase64
