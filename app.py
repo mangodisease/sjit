@@ -27,6 +27,14 @@ def ping():
 @app.route("/add-student", methods=['POST'])
 def add_student():
 	try:
+		
+		file = request.files['file']
+		img_url = base64.b64encode(file.read())
+
+		img = face_recognition.load_image_file(file)
+		encoded_img = face_recognition.face_encodings(img)[0]
+		print(img_url)
+		print(encoded_img)
 		name = request.name
 		course = request.course
 		year_level = request.year_level
@@ -34,13 +42,6 @@ def add_student():
 		parent_name = request.parent_name
 		parent_contact = request.parent_contact
 
-		file = request.files['file']
-		img_url = base64.b64encode(file.read())
-
-		img = face_recognition.load_image_file(file)
-		encoded_img = face_recognition.face_encodings(img)[0]
-
-		print(encoded_img)
 		students.insert_one({
 		"name": name, "course": course, "year_level": year_level, "birthdate": birthdate, 
 		"parent_name": parent_name, "parent_contact": parent_contact,
