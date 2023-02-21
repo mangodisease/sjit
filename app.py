@@ -46,10 +46,11 @@ def encode_img():
 		img_url = base64.b64encode(file.read())
 		img = face_recognition.load_image_file(file)
 		encoded_img = face_recognition.face_encodings(img)[0]
+		print(encoded_img)
 		students.insert_one({
 		"encoded_img": encoded_img
 		})
-		print(encoded_img)
+		
 		return {
 			"added": True
 		}
