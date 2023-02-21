@@ -24,7 +24,7 @@ def ping():
     return "Hello, I am alive", 200
 
 
-@app.post("/add-student", methods=['POST'])
+@app.route("/add-student", methods=['POST'])
 def add_student():
 	try:
 		name = request.name
