@@ -31,15 +31,15 @@ def encode_img():
 		img_url = base64.b64encode(file.read())
 		img = face_recognition.load_image_file(file)
 		encoded_img = face_recognition.face_encodings(img)[0]
-		
+		students.insert_one({
+		"encoded_img": encoded_img, "img_url": img_url
+		})
 		return {
-			"encoded_img": encoded_img,
-			"img_url": img_url
+			"added": True
 		}
 	except:
 		return {
-			"encoded_img": None,
-			"img_url": None
+			"added": False
 		}
 	
 @app.route("/add-student", methods=['POST'])
