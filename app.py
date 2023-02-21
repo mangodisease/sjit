@@ -3,7 +3,18 @@ from flask import Flask, request
 from flask_cors import CORS
 import numpy as np
 from io import BytesIO
-from PIL import Image
+from pymongo import MongoClient
+import base64
+
+client = MongoClient("mongodb+srv://sjit:pass@attendance.3txyowa.mongodb.net")
+#database
+db = client["Attendance"]
+#tables
+students = db.students
+teachers = db.teachers
+schedule = db.schedule
+attendance_log = db.attendance_log
+reports = db.reports
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -12,21 +23,36 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 def ping():
     return "Hello, I am alive", 200
 
-def read_file_as_image(data) -> np.ndarray:
-    image = np.array(Image.open(BytesIO(data)))
-    return image
 
-@app.post("/encode", methods=['POST'])
-def encode():
-    file = request.files['file']
-    img = face_recognition.load_image_file(file)
-    #img = read_file_as_image(await file.read())
-    encoded = face_recognition.face_encodings(img)[0]
-    print(encoded)
-    
-    return {
-        "encoded": "k"
-    }
+@app.post("/add-student", methods=['POST'])
+def add_student():
+	try:
+		name = request.name
+		course = request.course
+		year_level = request.year_level
+		birthdate = request.birthdate
+		parent_name = request.parent_name
+		parent_contact = request.parent_contact
+
+		file = request.files['file']
+		img_url = base64.b64encode(file.read())
+
+		img = face_recognition.load_image_file(file)
+		encoded_img = face_recognition.face_encodings(img)[0]
+
+		print(encoded_img)
+		students.insert_one({
+		"name": name, "course": course, "year_level": year_level, "birthdate": birthdate, 
+		"parent_name": parent_name, "parent_contact": parent_contact,
+		"encoded_img": encoded_img, "img_url": img_url
+		})
+		return {
+			"added": True
+		}
+	except:
+		return {
+			"added": False
+		}
 
 if __name__ == "__main__":
 	app.run()
