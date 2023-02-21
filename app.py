@@ -17,12 +17,10 @@ def read_file_as_image(data) -> np.ndarray:
     return image
 
 @app.post("/encode")
-async def encode(
-    file: UploadFile = File(...)
-):
-    raw_img = await file.read()
-    #image = face_recognition.load_image_file(raw_img)
-    img = read_file_as_image(await file.read())
+def encode():
+    file = request.files['file']
+    img = face_recognition.load_image_file(file)
+    #img = read_file_as_image(await file.read())
     encoded = face_recognition.face_encodings(img)[0]
     print(encoded)
     
