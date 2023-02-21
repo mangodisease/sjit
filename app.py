@@ -1,38 +1,20 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-import numpy as np
 import face_recognition
+from flask import Flask, request
+from flask_cors import CORS
+import numpy as np
 from io import BytesIO
 from PIL import Image
 
-app = FastAPI()
+app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "*"
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@app.route("/ping", methods=['GET'])
+def ping():
+    return "Hello, I am alive", 200
 
 def read_file_as_image(data) -> np.ndarray:
     image = np.array(Image.open(BytesIO(data)))
     return image
-
-@app.post("/")
-async def test(
-    file: UploadFile = File(...)
-):
-    f = await file.read()
-    img = read_file_as_image(f)
-    #print(img)
-    return "OK"
 
 @app.post("/encode")
 async def encode(
@@ -42,11 +24,12 @@ async def encode(
     #image = face_recognition.load_image_file(raw_img)
     img = read_file_as_image(await file.read())
     encoded = face_recognition.face_encodings(img)[0]
-
+    print(encoded)
+    
     return {
-        "encoded": encoded
+        "encoded": "k"
     }
-
 if __name__ == "__main__":
-    uvicorn.run(app, host='localhost', port=5000)
+	app.run()
+
 
