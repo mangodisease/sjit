@@ -29,6 +29,7 @@ async def encode(
     return {
         "encoded": "k"
     }
+
 if __name__ == "__main__":
 	app.run()
 
