@@ -23,6 +23,21 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 def ping():
     return "Hello, I am alive", 200
 
+@app.route("/test", methods=['POST'])
+def testencode_img():
+	try:
+		students.insert_one({
+		"encoded_img": "test", "img_url": "test"
+		})
+		
+		return {
+			"added": True
+		}
+	except:
+		return {
+			"added": False
+		}
+	
 @app.route("/encode-img", methods=['POST'])
 def encode_img():
 	try:
