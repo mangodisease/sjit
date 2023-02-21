@@ -35,12 +35,12 @@ def add_student():
 		encoded_img = face_recognition.face_encodings(img)[0]
 		print(img_url)
 		print(encoded_img)
-		name = request.form["name"]
-		course = request.form["course"]
-		year_level = request.form["year_level"]
-		birthdate = request.form["birthdate"]
-		parent_name = request.form["parent_name"]
-		parent_contact = request.form["parent_contact"]
+		name = request.files["name"]
+		course = request.files["course"]
+		year_level = request.files["year_level"]
+		birthdate = request.files["birthdate"]
+		parent_name = request.files["parent_name"]
+		parent_contact = request.files["parent_contact"]
 
 		students.insert_one({
 		"name": name, "course": course, "year_level": year_level, "birthdate": birthdate, 
