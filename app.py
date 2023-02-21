@@ -47,8 +47,9 @@ def encode_img():
 		img = face_recognition.load_image_file(file)
 		encoded_img = face_recognition.face_encodings(img)[0]
 		students.insert_one({
-		"encoded_img": encoded_img#, "img_url": img_url
+		"encoded_img": encoded_img
 		})
+		print(encoded_img)
 		return {
 			"added": True
 		}
