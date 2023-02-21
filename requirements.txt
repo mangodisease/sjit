@@ -1,8 +1,6 @@
-flask
-numpy
 face_recognition
-python-multipart
-pymongo[srv]
-gunicorn
-cmake
+flask
 flask-cors
+gunicorn
+pillow
+numpy
