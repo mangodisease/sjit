@@ -23,25 +23,38 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 def ping():
     return "Hello, I am alive", 200
 
-
-@app.route("/add-student", methods=['POST'])
-def add_student():
+@app.route("/encode-img", methods=['POST'])
+def encode_img():
 	try:
 		
 		file = request.files['file']
 		img_url = base64.b64encode(file.read())
-
 		img = face_recognition.load_image_file(file)
 		encoded_img = face_recognition.face_encodings(img)[0]
-		print(img_url)
-		print(encoded_img)
-		name = request.files["name"]
-		course = request.files["course"]
-		year_level = request.files["year_level"]
-		birthdate = request.files["birthdate"]
-		parent_name = request.files["parent_name"]
-		parent_contact = request.files["parent_contact"]
+		
+		return {
+			"encoded_img": encoded_img,
+			"img_url": img_url
+		}
+	except:
+		return {
+			"encoded_img": None,
+			"img_url": None
+		}
+	
+@app.route("/add-student", methods=['POST'])
+def add_student():
+	try:
 
+		name = request.form["name"]
+		course = request.form["course"]
+		year_level = request.form["year_level"]
+		birthdate = request.form["birthdate"]
+		parent_name = request.form["parent_name"]
+		parent_contact = request.form["parent_contact"]
+
+		img_url = request.form['img_url']
+		encoded_img = request.form['encoded_img']
 		students.insert_one({
 		"name": name, "course": course, "year_level": year_level, "birthdate": birthdate, 
 		"parent_name": parent_name, "parent_contact": parent_contact,
